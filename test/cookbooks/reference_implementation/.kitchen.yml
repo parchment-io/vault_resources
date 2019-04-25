@@ -1,0 +1,84 @@
+---
+driver:
+  name: vagrant
+
+platforms:
+  - name: ubuntu-18.04
+
+verifier:
+  name: inspec
+
+suites:
+  - name: reference
+  
+    driver_config:
+      network:
+      - ["forwarded_port", {guest: 8200, host: 8200}]
+    run_list:
+      - recipe[reference_implementation::default]
+    attributes:
+      vault_resources:
+        secrets_persist_local: true
+      reference_implementation:
+        ssl_verify: false
+        print_sensitive: true
+        secrets_persist_local: true
+        ldap:
+          config:
+            url: "ldap://mycompany.local"
+            userdn: "ou=\"Some User OU\",dc=mycompany,dc=local"
+            groupdn: "ou=\"Security Groups\",dc=mycompany,dc=local"
+            userattr: "userprincipalname"
+            upndomain: "mycompany.local"
+          groups:
+            sysadmin:
+              policies: ["vault-admins"]
+        approles:
+          application-1:
+            # You can optionally set the approle role-id, instead of using a randomly generated uuid
+            role_id: 'application-1'
+            secret_id_ttl: 0
+            secret_id_num_uses: 0
+            token_num_uses: 20
+            token_ttl: 120
+            token_max_ttl: 1800
+            policies: ["generic-application", "application-1"]
+        policies:
+          vault-admins:
+            path:
+              secret/*:
+                capabilities: ["create", "read", "update", "delete", "list", "sudo"]
+              kv_v1/*:
+                capabilities: ["create", "read", "update", "delete", "list", "sudo"]
+              kv_v2/*:
+                capabilities: ["create", "read", "update", "delete", "list", "sudo"]
+              sys/*:
+                capabilities: ["create", "read", "update", "delete", "list", "sudo"]
+              auth/*:
+                capabilities: ["create", "read", "update", "delete", "list", "sudo"]
+              rabbitmq/*:
+                capabilities: ["create", "read", "update", "delete", "list", "sudo"]
+              consul/*:
+                capabilities: ["create", "read", "update", "delete", "list", "sudo"]
+          generic-application:
+            path:
+              kv_v1/global-config/*:
+                capabilities: ["read", "list"]
+          application-1:
+            path:
+              kv_v1/app1/*:
+                capabilities: ["read", "list"]
+              kv_v2/data/app1/*:
+                capabilities: ["read"]
+              kv_v2/metadata/app1/*:
+                capabilities: ["list"]
+        kv_stores:
+          kv_v1:
+            options:
+              version: '1'
+          kv_v2:
+            options:
+              version: '2'
+            config:
+              max_versions: 10
+              cas_required: false

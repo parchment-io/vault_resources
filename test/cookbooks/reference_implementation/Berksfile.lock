@@ -1,0 +1,13 @@
+DEPENDENCIES
+  reference_implementation
+    path: .
+    metadata: true
+  vault_resources
+    path: ../../..
+
+GRAPH
+  docker (4.9.2)
+  reference_implementation (0.0.0)
+    docker (>= 0.0.0)
+    vault_resources (>= 0.0.0)
+  vault_resources (0.1.0)
