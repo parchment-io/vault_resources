@@ -1,0 +1,7 @@
+# frozen_string_literal: true
+
+gem 'hashdiff'
+gem 'kitchen-transport-rsync'
+gem 'kitchen-vagrant'
+gem 'test-kitchen', '~> 1.4'
+gem 'vault'

@@ -1,0 +1,9 @@
+default['vault_resources']['vault_host'] = 'localhost:8200'
+default['vault_resources']['vault_port'] = 8200
+default['vault_resources']['vault_proto'] = 'https'
+default['vault_resources']['ssl_verify'] = true
+default['vault_resources']['policies]'] = {}
+default['vault_resources']['approles'] = {}
+default['vault_resources']['ldap']['groups'] = {}
+default['vault_resources']['print_sensitive'] = false
+default['vault_resources']['secrets_persist_local'] = false
