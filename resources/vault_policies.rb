@@ -25,7 +25,11 @@ load_current_value do |policies_resource|
   end.reduce({}, :merge)
 
   # Find differences between passed in policies and policies already configure in vault
-  policy_diff = HashDiff.diff(current_policies, policies_resource.policies, array_path: true)
+  policy_diff = begin
+                  Hashdiff.diff(current_policies, policies_resource.policies, array_path: true)
+                rescue NameError
+                  HashDiff.diff(current_policies, policies_resource.policies, array_path: true)
+                end
   subtractions = policy_diff.map { |a| a[1][0] if ['-'].include? a[0] }.compact.uniq
   # We don't want the removed policies to show in configure action
   # Let remove stale logic deal with them
