@@ -10,6 +10,8 @@
 resource_name :vault_initialize_secrets_storage
 
 property :local_file, String, default: '/tmp/secrets/vault-init-secrets.json'
+property :local_file_owner, [String, nil], default: lazy { node['hashicorp-vault']&.fetch('service_user', nil) }
+property :delete_local_file_after_upload, [true, false], default: true
 property :s3_bucket, String
 property :s3_file, String
 property :aws_cli_env, Hash, default: {}
@@ -20,7 +22,7 @@ action :s3_upload do
     content "#{JSON.pretty_generate(node.run_state['vault_init_secrets'])}\n"
     sensitive true
     mode '0600'
-    owner node['hashicorp-vault']['service_user']
+    owner new_resource.local_file_owner
   end
 
   execute 's3 secrets upload' do
@@ -31,7 +33,7 @@ action :s3_upload do
 
   file new_resource.local_file do
     action :delete
-    not_if { node['labels']['environment'] == 'local' }
+    only_if { new_resource.delete_local_file_after_upload }
   end
 end
 
@@ -39,6 +41,7 @@ action :save do
   require 'fileutils'
   FileUtils.mkdir_p(::File.dirname(new_resource.local_file))
   file new_resource.local_file do
+    owner new_resource.local_file_owner
     content "#{JSON.pretty_generate(node.run_state['vault_init_secrets'])}\n"
     sensitive true
     mode '0600'

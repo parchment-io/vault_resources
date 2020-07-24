@@ -10,4 +10,4 @@ GRAPH
   reference_implementation (0.0.0)
     docker (>= 0.0.0)
     vault_resources (>= 0.0.0)
-  vault_resources (0.1.1)
+  vault_resources (0.1.2)
