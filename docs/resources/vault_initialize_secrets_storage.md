@@ -6,6 +6,12 @@ This resource will store the unseal keys that were generated as part of Vault in
 `property :local_file, String, default: '/tmp/secrets/vault-init-secrets.json'`
 This file is used as a temporary storage location for uploading the Vault init secrets to S3 in the :s3_upload action.  It is removed after successful upload to S3.  It is also used as part of the :save action.  Save will store the file locally so an admin can pick up the secrets.  The admin should make sure this file is removed after the secrets are stored off in a secure location.
 
+`property :local_file_owner, String, default: node['hashicorp-vault']['service_user']`
+User to assign ownership of the `local_file`.
+
+`property :delete_local_file_after_upload, [true, false], default: true`
+Whether to remove the `local_file` after being uploaded to s3 with a `:s3_upload` action.
+ 
 `property :s3_bucket, String`
 This is the S3 bucket that the secrest file is uploaded to as part of the :s3_upload action.  This option is ignored in the :load and :save actions.
 
