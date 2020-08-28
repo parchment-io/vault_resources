@@ -30,9 +30,16 @@ action :configure do
     converge_if_changed :consul_roles do
       # Configure consul roles
       new_resource.consul_roles.each do |role, config|
+        # New Consul ACL system
+        # https://www.consul.io/docs/acl/acl-system
         vault.logical.write("consul/roles/#{role}",
                             lease: config['lease'],
-                            policy: Base64.encode64(config['policy'].join("\n")), 'force' => true)
+                            policies: config['policies'], 'force' => true) unless config['policies'].nil?
+        # Legacy Consul ACL system
+        # https://www.consul.io/docs/acl/acl-legacy
+        vault.logical.write("consul/roles/#{role}",
+                            lease: config['lease'],
+                            policy: Base64.encode64(config['policy'].join("\n")) unless config['policy'].nil?
       end
     end
   end

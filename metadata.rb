@@ -6,7 +6,7 @@ maintainer_email 'chef@parchment.com'
 license          'MIT License, see LICENSE file'
 description      'Configures Vault resources'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.2'
+version          '0.2.0'
 
 supports      'ubuntu'
 chef_version  '>= 12'
