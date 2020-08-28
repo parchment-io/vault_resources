@@ -39,7 +39,7 @@ action :configure do
         # https://www.consul.io/docs/acl/acl-legacy
         vault.logical.write("consul/roles/#{role}",
                             lease: config['lease'],
-                            policy: Base64.encode64(config['policy'].join("\n")) unless config['policy'].nil?
+                            policy: Base64.encode64(config['policy'].join("\n")), 'force' => true) unless config['policy'].nil?
       end
     end
   end
