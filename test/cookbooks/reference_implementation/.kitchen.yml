@@ -5,12 +5,9 @@ driver:
 platforms:
   - name: ubuntu-18.04
 
-verifier:
-  name: inspec
-
 suites:
   - name: reference
-  
+
     driver_config:
       network:
       - ["forwarded_port", {guest: 8200, host: 8200}]
@@ -33,6 +30,19 @@ suites:
           groups:
             sysadmin:
               policies: ["vault-admins"]
+        oidc:
+          config:
+            default_role: "default"
+            oidc_client_id: "my-azure-client-id"
+            oidc_client_secret: "a_client_secret"
+            oidc_discovery_url: "https://login.microsoftonline.com/my-connect-endpoint/v2.0"
+          roles:
+            default:
+              user_claim: "upn"
+              allowed_redirect_uris: "http://localhost:8200/ui/vault/auth/oidc/oidc/callback,http://localhost:8250/oidc/callback"
+              groups_claim: "groups"
+              oidc_scopes: "https://graph.microsoft.com/.default,profile"
+              policies: ["default"]
         approles:
           application-1:
             # You can optionally set the approle role-id, instead of using a randomly generated uuid
