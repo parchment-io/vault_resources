@@ -13,6 +13,7 @@ The resources in this cookbook do a wide variety of tasks.  There is a resource 
 - Configures ruby Vault client with appropriate access
 - Creates policies
 - Sets up LDAP authentication
+- Sets up OIDC authentication
 - Creates approles
 - Enables syslog auditing
 - Creates multiple kv store backends

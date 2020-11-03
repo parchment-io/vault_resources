@@ -38,13 +38,13 @@ docker_service 'default' do
 end
 
 docker_image 'vault' do
-  tag '1.1.1'
+  tag '1.5.3'
   action :pull
 end
 
 docker_container 'vault-server' do
   command 'server'
-  tag '1.1.1'
+  tag '1.5.3'
   repo 'vault'
   port '8200:8200'
   volumes ['/etc/vault:/vault/config', '/tmp/vault:/tmp/vault', '/dev/log:/dev/log']
@@ -98,6 +98,13 @@ end
 vault_authentication_ldap 'configure ldap' do
   ldap_config node['reference_implementation']['ldap']['config']
   ldap_groups node['reference_implementation']['ldap']['groups']
+  action %i[configure prune]
+  sensitive true
+end
+
+vault_authentication_oidc 'configure oidc' do
+  oidc_config node['reference_implementation']['oidc']['config']
+  oidc_roles node['reference_implementation']['oidc']['roles']
   action %i[configure prune]
   sensitive true
 end
