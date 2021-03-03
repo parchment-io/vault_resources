@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_initialize_secrets_storage
+provides :vault_initialize_secrets_storage
 
 property :local_file, String, default: '/tmp/secrets/vault-init-secrets.json'
 property :local_file_owner, [String, nil], default: lazy { node['hashicorp-vault']&.fetch('service_user', nil) }

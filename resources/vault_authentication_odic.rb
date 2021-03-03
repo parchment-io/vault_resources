@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_authentication_oidc
+provides :vault_authentication_oidc
 
 property :oidc_config, Hash, default: {}
 property :oidc_roles, Hash, default: {}

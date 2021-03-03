@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_secret_engine_consul
+provides :vault_secret_engine_consul
 
 property :consul_config, Hash, default: {}
 property :consul_roles, Hash, default: {}

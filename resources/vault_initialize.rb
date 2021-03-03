@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_initialize
+provides :vault_initialize
 
 property :secret_shares, Integer, required: true, desired_state: false
 property :secret_threshold, Integer, required: true, desired_state: false

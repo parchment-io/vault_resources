@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_authentication_ldap
+provides :vault_authentication_ldap
 
 property :ldap_config, Hash, default: {}
 property :ldap_groups, Hash, default: {}

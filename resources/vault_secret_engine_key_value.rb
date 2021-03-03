@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_secret_engine_key_value
+provides :vault_secret_engine_key_value
 
 property :mount_path, String, default: 'secret', desired_state: false
 property :key_value_options, Hash, default: {}

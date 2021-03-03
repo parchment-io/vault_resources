@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_unseal
+provides :vault_unseal
 
 property :unseal_keys, Array, default: [], desired_state: false, sensitive: true
 
