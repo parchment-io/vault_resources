@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_secret_engine_database
+provides :vault_secret_engine_database
 
 property :mount_path, String, default: 'database', desired_state: false
 property :database_name, String, desired_state: false

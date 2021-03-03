@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_audit_syslog
+provides :vault_audit_syslog
 
 default_action :configure
 

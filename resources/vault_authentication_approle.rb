@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_authentication_approle
+provides :vault_authentication_approle
 
 property :approles, Hash, default: {}
 

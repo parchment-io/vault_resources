@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_secret_engine_rabbitmq
+provides :vault_secret_engine_rabbitmq
 
 property :rabbitmq_config_connection, Hash, default: {}
 property :rabbitmq_config_lease, Hash, default: {}

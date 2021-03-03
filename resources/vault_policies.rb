@@ -8,6 +8,7 @@
 #
 
 resource_name :vault_policies
+provides :vault_policies
 
 property :policies, Hash, default: {}
 property :remove_policies, Array, default: []
