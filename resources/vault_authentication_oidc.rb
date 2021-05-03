@@ -61,6 +61,18 @@ action :configure do
         auth_data = vault.logical.read("sys/auth")
         accessor = auth_data.data[:"oidc/"][:accessor]
         alias_config = { "name": config['name'], "mount_accessor": accessor, "canonical_id": canonical_id}
+        # Matching existing group aliases throw a client error
+        # Silently iterate if no changes, update or create otherwise
+        current_aliases = vault.logical.list('identity/group-alias/id').map do |current_alias|
+          alias_data = vault.logical.read("identity/group-alias/id/#{current_alias}")
+          if alias_data.data[:name] == config['name'] and alias_data.data[:canonical_id] == canonical_id
+            return
+          elsif alias_data.data[:name] == config['name']
+            Chef::Log.warn("Detected change to group-alias, updating existing name: #{config['name']}")
+            vault.logical.write("identity/group-alias/id/#{alias_data.data[:id]}", alias_config, 'force' => true)
+            return
+          end
+        end
         vault.logical.write("identity/group-alias", alias_config, 'force' => true)
       end
     end
