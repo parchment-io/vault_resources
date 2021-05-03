@@ -108,7 +108,7 @@ vault_authentication_oidc 'configure oidc' do
   oidc_groups node['reference_implementation']['oidc']['groups']
   oidc_group_aliases node['reference_implementation']['oidc']['group_aliases']
   remove_oidc_groups node['reference_implementation']['oidc']['remove_groups']
-  action %i[prune configure]
+  action %i[configure]
   sensitive true
 end
 
