@@ -5,7 +5,7 @@ maintainer       'Parchment Inc.'
 maintainer_email 'chef@parchment.com'
 license          'MIT'
 description      'Configures Vault resources'
-version          '0.4.0'
+version          '0.4.1'
 
 supports      'ubuntu'
 chef_version  '>= 15.3'
