@@ -67,10 +67,11 @@ action :configure do
         vault.logical.list('identity/group-alias/id').map do |current_alias|
           alias_data = vault.logical.read("identity/group-alias/id/#{current_alias}")
           if alias_data.data[:name] == config['name'] && alias_data.data[:canonical_id] == canonical_id
-            next
+            return
           elsif alias_data.data[:name] == config['name']
             Chef::Log.warn("Detected change to group-alias, updating existing name: #{config['name']}")
             vault.logical.write("identity/group-alias/id/#{alias_data.data[:id]}", alias_config, 'force' => true)
+            return
           end
         end
         vault.logical.write('identity/group-alias', alias_config, 'force' => true)
