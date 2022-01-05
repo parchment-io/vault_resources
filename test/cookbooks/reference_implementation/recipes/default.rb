@@ -34,7 +34,7 @@ cookbook_file '/etc/vault/vault_config.json' do
 end
 
 docker_service 'default' do
-  action %i[create start]
+  action %i(create start)
 end
 
 docker_image 'vault' do
@@ -80,25 +80,25 @@ ruby_block 'configure vault client' do
   block do
     vault_options = {
       address: 'http://localhost:8200',
-      token: node.run_state['vault_init_secrets']&.fetch('token', nil)
+      token: node.run_state['vault_init_secrets']&.fetch('token', nil),
     }
     VaultResources::ClientFactory.vault_client(options: vault_options)
   end
 end
 
 vault_unseal 'unseal vault' do
-  unseal_keys (lazy { node.run_state['vault_init_secrets']&.fetch('keys') || [] })
+  unseal_keys(lazy { node.run_state['vault_init_secrets']&.fetch('keys') || [] })
 end
 
 vault_policies 'configure policies' do
   policies node['reference_implementation']['policies']
-  action %i[configure prune]
+  action %i(configure prune)
 end
 
 vault_authentication_ldap 'configure ldap' do
   ldap_config node['reference_implementation']['ldap']['config']
   ldap_groups node['reference_implementation']['ldap']['groups']
-  action %i[configure prune]
+  action %i(configure prune)
   sensitive true
 end
 
@@ -108,7 +108,7 @@ vault_authentication_oidc 'configure oidc' do
   oidc_groups node['reference_implementation']['oidc']['groups']
   oidc_group_aliases node['reference_implementation']['oidc']['group_aliases']
   remove_oidc_groups node['reference_implementation']['oidc']['remove_groups']
-  action %i[configure]
+  action %i(configure)
   sensitive true
 end
 

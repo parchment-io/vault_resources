@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_secret_engine_consul
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_secret_engine_consul
 provides :vault_secret_engine_consul
+unified_mode true
 
 property :consul_config, Hash, default: {}
 property :consul_roles, Hash, default: {}

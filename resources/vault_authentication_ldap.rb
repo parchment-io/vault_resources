@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_authentication_ldap
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_authentication_ldap
 provides :vault_authentication_ldap
+unified_mode true
 
 property :ldap_config, Hash, default: {}
 property :ldap_groups, Hash, default: {}

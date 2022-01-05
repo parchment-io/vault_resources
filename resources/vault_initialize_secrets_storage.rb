@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_initialize_secrets_storage
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_initialize_secrets_storage
 provides :vault_initialize_secrets_storage
+unified_mode true
 
 property :local_file, String, default: '/tmp/secrets/vault-init-secrets.json'
 property :local_file_owner, [String, nil], default: lazy { node['hashicorp-vault']&.fetch('service_user', nil) }

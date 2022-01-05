@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_authentication_oidc
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_authentication_oidc
 provides :vault_authentication_oidc
+unified_mode true
 
 property :oidc_config, Hash, default: {}
 property :oidc_roles, Hash, default: {}
@@ -49,31 +50,30 @@ action :configure do
     converge_if_changed :oidc_group_aliases do
       # Configure oidc group aliases
       vault = VaultResources::ClientFactory.vault_client
-      new_resource.oidc_group_aliases.each do |group_alias, config|
+      new_resource.oidc_group_aliases.each do |_group_alias, config|
         group_data = vault.logical.read("identity/group/name/#{config['group']}")
         canonical_id = group_data.data[:id]
         if canonical_id.nil?
           Chef::Log.warn("Failed to find Vault canonical_id (group): #{config['group']}")
-          return
+          break
         end
         # Use logical read as sys/auths does not return accessor
         # https://github.com/hashicorp/vault-ruby/pull/238
-        auth_data = vault.logical.read("sys/auth")
+        auth_data = vault.logical.read('sys/auth')
         accessor = auth_data.data[:"oidc/"][:accessor]
-        alias_config = { "name": config['name'], "mount_accessor": accessor, "canonical_id": canonical_id}
+        alias_config = { "name": config['name'], "mount_accessor": accessor, "canonical_id": canonical_id }
         # Matching existing group aliases throw a client error
         # Silently iterate if no changes, update or create otherwise
-        current_aliases = vault.logical.list('identity/group-alias/id').map do |current_alias|
+        vault.logical.list('identity/group-alias/id').map do |current_alias|
           alias_data = vault.logical.read("identity/group-alias/id/#{current_alias}")
-          if alias_data.data[:name] == config['name'] and alias_data.data[:canonical_id] == canonical_id
-            return
+          if alias_data.data[:name] == config['name'] && alias_data.data[:canonical_id] == canonical_id
+            next
           elsif alias_data.data[:name] == config['name']
             Chef::Log.warn("Detected change to group-alias, updating existing name: #{config['name']}")
             vault.logical.write("identity/group-alias/id/#{alias_data.data[:id]}", alias_config, 'force' => true)
-            return
           end
         end
-        vault.logical.write("identity/group-alias", alias_config, 'force' => true)
+        vault.logical.write('identity/group-alias', alias_config, 'force' => true)
       end
     end
   end

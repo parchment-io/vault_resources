@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_initialize
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_initialize
 provides :vault_initialize
+unified_mode true
 
 property :secret_shares, Integer, required: true, desired_state: false
 property :secret_threshold, Integer, required: true, desired_state: false
@@ -48,7 +49,7 @@ action :configure do
                                        secret_threshold: new_resource.secret_threshold)
   init_data = {
     'keys' => vault_init_response.keys_base64,
-    'token' => vault_init_response.root_token
+    'token' => vault_init_response.root_token,
   }
   node.run_state['vault_init_secrets'] = init_data
 

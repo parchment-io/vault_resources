@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_secret_engine_database
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_secret_engine_database
 provides :vault_secret_engine_database
+unified_mode true
 
 property :mount_path, String, default: 'database', desired_state: false
 property :database_name, String, desired_state: false
