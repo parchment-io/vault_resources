@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_audit_syslog
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_audit_syslog
 provides :vault_audit_syslog
+unified_mode true
 
 default_action :configure
 

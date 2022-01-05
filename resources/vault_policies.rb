@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_policies
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_policies
 provides :vault_policies
+unified_mode true
 
 property :policies, Hash, default: {}
 property :remove_policies, Array, default: []
@@ -20,7 +21,7 @@ load_current_value do |policies_resource|
   # Query Vault for current policies
   # Don't include default or root policies
   vault = VaultResources::ClientFactory.vault_client
-  current_policies = vault.sys.policies.reject { |e| %w[default root].include? e }.map do |policy|
+  current_policies = vault.sys.policies.reject { |e| %w(default root).include? e }.map do |policy|
     policy_data = vault.logical.read("sys/policy/#{policy}").data
     { policy_data[:name] => JSON.parse(policy_data[:rules]) }
   end.reduce({}, :merge)

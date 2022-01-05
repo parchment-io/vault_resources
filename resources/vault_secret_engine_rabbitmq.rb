@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_secret_engine_rabbitmq
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_secret_engine_rabbitmq
 provides :vault_secret_engine_rabbitmq
+unified_mode true
 
 property :rabbitmq_config_connection, Hash, default: {}
 property :rabbitmq_config_lease, Hash, default: {}

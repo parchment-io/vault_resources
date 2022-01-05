@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_authentication_approle
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_authentication_approle
 provides :vault_authentication_approle
+unified_mode true
 
 property :approles, Hash, default: {}
 
@@ -22,7 +23,7 @@ load_current_value do
   current_approles = vault.logical.list('auth/approle/role').map do |approle_name|
     data = vault.logical.read("auth/approle/role/#{approle_name}").data.map do |key, value|
       # We need to convert the keys from symbols to strings
-      if %i[bind_secret_id bound_cidr_list period].include? key
+      if %i(bind_secret_id bound_cidr_list period).include? key
         {}
       else
         { key.to_s => value }

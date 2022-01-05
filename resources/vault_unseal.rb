@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# Cookbook Name:: vault_resources
+# Cookbook:: vault_resources
 # Resource:: vault_unseal
 #
 # See LICENSE file
@@ -9,6 +9,7 @@
 
 resource_name :vault_unseal
 provides :vault_unseal
+unified_mode true
 
 property :unseal_keys, Array, default: [], desired_state: false, sensitive: true
 
